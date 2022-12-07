@@ -34,10 +34,10 @@ pub fn configure() {
     let client_secret = gets("client_secret: ");
 
     let cfg: Config = Config {
-        client_id: client_id.to_owned(),
-        client_secret: client_secret.to_owned(),
-        username: username.to_owned(),
-        password: password.to_owned(),
+        client_id,
+        client_secret,
+        username,
+        password,
         access_token: String::new(),
     };
 
@@ -59,7 +59,7 @@ fn gets(prompt: &str) -> String {
                     continue;
                 }
 
-                return line.to_owned();
+                return line;
             },
             _ => continue,
         };
