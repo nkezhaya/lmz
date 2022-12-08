@@ -25,26 +25,10 @@ fn main() {
 
     match cmd.get_matches().subcommand() {
         Some(("configure", _)) => config::configure(),
-        Some(("status", _)) => {
-            let status = match client::get_status(cfg) {
-                Ok(status) => status,
-                Err(err) => err.to_string(),
-            };
-
-            println!("{status}");
-        },
-        Some(("on", _)) => put_status(cfg, true),
-        Some(("off", _)) => put_status(cfg, false),
+        Some(("status", _)) => println!("{:?}", client::get_status(cfg)),
+        Some(("on", _)) => println!("{:?}", client::put_status(cfg, true)),
+        Some(("off", _)) => println!("{:?}", client::put_status(cfg, false)),
         _ => unreachable!(),
 
     };
-}
-
-fn put_status(cfg: config::Config, on: bool) {
-    let result = match client::put_status(cfg, on) {
-        Ok(status) => status,
-        Err(err) => err.to_string(),
-    };
-
-    println!("{result}");
 }
