@@ -36,7 +36,7 @@ pub fn get_status(cfg: Config) -> Result<String> {
 
 pub fn put_status(cfg: Config, on: bool) -> Result<String> {
     let status = if on { "ON" } else { "STANDBY" };
-    let body = String::from(format!("{{\"status\":\"{}\"}}", status));
+    let body = String::from(format!(r#"{{"status":"{}"}}"#, status));
 
     println!("Updating status...");
     let client = reqwest::blocking::Client::new();
@@ -77,7 +77,7 @@ pub fn get_auth_token(cfg: Config) -> Result<String> {
     match resp {
         Ok(token) => return Ok(token.access_token),
         Err(err) => {
-            println!("error fetching auth token: {}", err.to_string());
+            println!("error fetching auth token: {err:?}");
             process::exit(2);
         },
     };
@@ -85,7 +85,7 @@ pub fn get_auth_token(cfg: Config) -> Result<String> {
 
 fn put_headers(cfg: Config, builder: RequestBuilder) -> RequestBuilder {
     let auth_token = get_auth_token(cfg).unwrap();
-    let auth_header = format!("Bearer {}", auth_token);
+    let auth_header = format!("Bearer {auth_token}");
 
     return builder
         .header(header::ACCEPT, "application/json")
