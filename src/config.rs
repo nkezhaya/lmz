@@ -16,7 +16,7 @@ pub struct Config {
 
 pub fn path() -> String {
     let path = confy::get_configuration_file_path(APP_NAME, CONFIG_NAME).expect("expected path");
-    let path_string = String::from(path.to_str().unwrap());
+    let path_string = format!("{}", path.display());
 
     return path_string;
 }
@@ -46,22 +46,17 @@ pub fn configure() {
 
 fn gets(prompt: &str) -> String {
     loop {
-        print!("{}", prompt);
+        print!("{prompt}");
         io::stdout().flush().expect("error flushing");
 
         let mut line = String::new();
 
-        match io::stdin().read_line(&mut line) {
-            Ok(_) => {
-                line = line.trim().to_owned();
+        if let Ok(_) = io::stdin().read_line(&mut line) {
+            line = line.trim().to_owned();
 
-                if line.len() == 0 {
-                    continue;
-                }
-
-                return line;
-            },
-            _ => continue,
-        };
+            if !line.is_empty() {
+                return line
+            }
+        }
     }
 }

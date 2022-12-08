@@ -40,15 +40,11 @@ pub fn put_status(cfg: Config, on: bool) -> Result<String> {
 
     println!("Updating status...");
     let client = reqwest::blocking::Client::new();
-    let result = put_headers(cfg, client.get(STATUS_URL))
+
+    put_headers(cfg, client.get(STATUS_URL))
         .json(&body)
         .send()?
-        .text();
-
-    match result {
-        Ok(result) => return Ok(result),
-        Err(err) => return Err(err),
-    };
+        .text()
 }
 
 #[derive(Deserialize)]

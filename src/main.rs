@@ -11,7 +11,7 @@ fn main() {
             println!("missing config, path: {}\n
                      rerun `lmz configure`", config::path());
 
-            process::exit(1);
+            process::exit(0);
         },
     };
 
@@ -31,7 +31,7 @@ fn main() {
                 Err(err) => err.to_string(),
             };
 
-            println!("{}", status);
+            println!("{status}");
         },
         Some(("on", _)) => put_status(cfg, true),
         Some(("off", _)) => put_status(cfg, false),
@@ -46,5 +46,5 @@ fn put_status(cfg: config::Config, on: bool) {
         Err(err) => err.to_string(),
     };
 
-    println!("{}", result);
+    println!("{result}");
 }
