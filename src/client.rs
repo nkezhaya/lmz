@@ -4,6 +4,7 @@ use reqwest::blocking::RequestBuilder;
 use reqwest::Result;
 use reqwest::header;
 use serde::Deserialize;
+use std::collections::HashMap;
 use std::process;
 
 const STATUS_URL: &str = "https://gw.lamarzocco.io/v1/home/machines/LM035401/status";
@@ -36,12 +37,13 @@ pub fn get_status(cfg: Config) -> Result<String> {
 
 pub fn put_status(cfg: Config, on: bool) -> Result<String> {
     let status = if on { "ON" } else { "STANDBY" };
-    let body = String::from(format!(r#"{{"status":"{}"}}"#, status));
+    let mut body = HashMap::new();
+    body.insert("status", status);
 
     println!("Updating status...");
     let client = reqwest::blocking::Client::new();
 
-    put_headers(cfg, client.get(STATUS_URL))
+    put_headers(cfg, client.post(STATUS_URL))
         .json(&body)
         .send()?
         .text()
