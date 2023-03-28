@@ -25,9 +25,9 @@ fn main() {
 
     match cmd.get_matches().subcommand() {
         Some(("configure", _)) => config::configure(),
-        Some(("status", _)) => println!("{:?}", client::get_status(cfg)),
-        Some(("on", _)) => println!("{:?}", client::put_status(cfg, true)),
-        Some(("off", _)) => println!("{:?}", client::put_status(cfg, false)),
+        Some(("status", _)) => println!("{}", client::get_status(cfg).unwrap()),
+        Some(("on", _)) => println!("{}", client::put_status(cfg, true).unwrap()),
+        Some(("off", _)) => println!("{}", client::put_status(cfg, false).unwrap()),
         _ => unreachable!(),
 
     };
